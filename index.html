@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业心理创伤自评测评 | 晓喻</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #165DFF, #4080FF);
+            color: #fff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .logo {
+            display: inline-block;
+            background: #165DFF;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #165DFF;
+            font-size: 24px;
+        }
+        .desc {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .quiz-area {
+            margin-bottom: 30px;
+        }
+        .question {
+            margin: 14px 0;
+            padding: 10px;
+            border-left: 3px solid #165DFF;
+        }
+        .options {
+            margin-top: 6px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .options label {
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        table th {
+            background: #E8F3FF;
+            color: #165DFF;
+        }
+        .result-box {
+            background: #F5F7FA;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: none;
+        }
+        .result-box h3 {
+            color: #165DFF;
+            margin-bottom: 10px;
+        }
+        .term {
+            color: #165DFF;
+            font-weight: bold;
+        }
+        .btn {
+            background: #165DFF;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px 10px 0;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        #pdf-content {
+            background: white;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container">
+        <div class="header">
+            <div class="logo">晓喻 · 专业心理测评</div>
+            <h1>心理创伤自评量表（PCL-5简化版）</h1>
+            <p class="desc">本测评为专业筛查工具，仅作自我参考，不构成临床诊断</p>
+        </div>
+
+        <div class="quiz-area" id="quiz">
+            <p style="margin-bottom:10px;font-weight:bold;">评分标准：0=完全没有 1=轻度 2=中度 3=重度 4=极重度</p>
+
+            <div class="question">
+                1. 反复出现痛苦的回忆、画面或想法？
+                <div class="options">
+                    <label><input type="radio" name="q1" value="0" checked> 0</label>
+                    <label><input type="radio" name="q1" value="1"> 1</label>
+                    <label><input type="radio" name="q1" value="2"> 2</label>
+                    <label><input type="radio" name="q1" value="3"> 3</label>
+                    <label><input type="radio" name="q1" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                2. 反复做与创伤相关的噩梦？
+                <div class="options">
+                    <label><input type="radio" name="q2" value="0" checked> 0</label>
+                    <label><input type="radio" name="q2" value="1"> 1</label>
+                    <label><input type="radio" name="q2" value="2"> 2</label>
+                    <label><input type="radio" name="q2" value="3"> 3</label>
+                    <label><input type="radio" name="q2" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                3. 突然感觉创伤事件再次发生（闪回）？
+                <div class="options">
+                    <label><input type="radio" name="q3" value="0" checked> 0</label>
+                    <label><input type="radio" name="q3" value="1"> 1</label>
+                    <label><input type="radio" name="q3" value="2"> 2</label>
+                    <label><input type="radio" name="q3" value="3"> 3</label>
+                    <label><input type="radio" name="q3" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                4. 刻意回避与创伤相关的想法或感受？
+                <div class="options">
+                    <label><input type="radio" name="q4" value="0" checked> 0</label>
+                    <label><input type="radio" name="q4" value="1"> 1</label>
+                    <label><input type="radio" name="q4" value="2"> 2</label>
+                    <label><input type="radio" name="q4" value="3"> 3</label>
+                    <label><input type="radio" name="q4" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                5. 刻意回避能唤起创伤的场景、人物或活动？
+                <div class="options">
+                    <label><input type="radio" name="q5" value="0" checked> 0</label>
+                    <label><input type="radio" name="q5" value="1"> 1</label>
+                    <label><input type="radio" name="q5" value="2"> 2</label>
+                    <label><input type="radio" name="q5" value="3"> 3</label>
+                    <label><input type="radio" name="q5" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                6. 对事物兴趣明显下降，难以感受快乐？
+                <div class="options">
+                    <label><input type="radio" name="q6" value="0" checked> 0</label>
+                    <label><input type="radio" name="q6" value="1"> 1</label>
+                    <label><input type="radio" name="q6" value="2"> 2</label>
+                    <label><input type="radio" name="q6" value="3"> 3</label>
+                    <label><input type="radio" name="q6" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                7. 持续情绪低落、麻木或疏离感？
+                <div class="options">
+                    <label><input type="radio" name="q7" value="0" checked> 0</label>
+                    <label><input type="radio" name="q7" value="1"> 1</label>
+                    <label><input type="radio" name="q7" value="2"> 2</label>
+                    <label><input type="radio" name="q7" value="3"> 3</label>
+                    <label><input type="radio" name="q7" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                8. 容易烦躁、发怒，过度警觉？
+                <div class="options">
+                    <label><input type="radio" name="q8" value="0" checked> 0</label>
+                    <label><input type="radio" name="q8" value="1"> 1</label>
+                    <label><input type="radio" name="q8" value="2"> 2</label>
+                    <label><input type="radio" name="q8" value="3"> 3</label>
+                    <label><input type="radio" name="q8" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                9. 睡眠变差、注意力难以集中？
+                <div class="options">
+                    <label><input type="radio" name="q9" value="0" checked> 0</label>
+                    <label><input type="radio" name="q9" value="1"> 1</label>
+                    <label><input type="radio" name="q9" value="2"> 2</label>
+                    <label><input type="radio" name="q9" value="3"> 3</label>
+                    <label><input type="radio" name="q9" value="4"> 4</label>
+                </div>
+            </div>
+            <div class="question">
+                10. 容易受惊吓，安全感严重不足？
+                <div class="options">
+                    <label><input type="radio" name="q10" value="0" checked> 0</label>
+                    <label><input type="radio" name="q10" value="1"> 1</label>
+                    <label><input type="radio" name="q10" value="2"> 2</label>
+                    <label><input type="radio" name="q10" value="3"> 3</label>
+                    <label><input type="radio" name="q10" value="4"> 4</label>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="calculateResult()">生成测评报告</button>
+        <button class="btn" onclick="exportPDF()" style="display:none;" id="pdfBtn">导出PDF报告</button>
+
+        <div class="result-box" id="result">
+            <div id="pdf-content">
+                <h3>晓喻 · 心理创伤测评专业报告</h3>
+                <p>总分：<span id="totalScore" style="font-size:20px;font-weight:bold;color:red;"></span></p>
+
+                <table>
+                    <tr>
+                        <th>症状维度</th>
+                        <th>得分</th>
+                        <th>专业释义</th>
+                    </tr>
+                    <tr>
+                        <td>闯入性症状</td>
+                        <td id="score1"></td>
+                        <td>创伤记忆不受控制地侵入意识，属于<span class="term">PTSD核心再体验症状</span></td>
+                    </tr>
+                    <tr>
+                        <td>回避症状</td>
+                        <td id="score2"></td>
+                        <td>主动逃避创伤线索，是心理<span class="term">自我防御机制</span>的过度表现</td>
+                    </tr>
+                    <tr>
+                        <td>负性认知与情绪</td>
+                        <td id="score3"></td>
+                        <td>情感麻木、快感缺失，反映<span class="term">情绪调节功能受损</span></td>
+                    </tr>
+                    <tr>
+                        <td>高警觉性症状</td>
+                        <td id="score4"></td>
+                        <td>自主神经系统过度激活，与<span class="term">肠脑轴应激反应</span>密切相关</td>
+                    </tr>
+                </table>
+
+                <h4>专业分析解释</h4>
+                <p id="analysis"></p>
+
+                <p style="margin-top:16px;font-size:12px;color:#666;text-align:right;">
+                    报告生成：晓喻心理测评系统 | 本结果仅为自评参考，不构成医疗诊断
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let total = 0;
+        let s1 = 0, s2 = 0, s3 = 0, s4 = 0;
+
+        function calculateResult() {
+            // 计算分数
+            s1 = parseInt(document.querySelector('input[name="q1"]:checked').value) +
+                 parseInt(document.querySelector('input[name="q2"]:checked').value) +
+                 parseInt(document.querySelector('input[name="q3"]:checked').value);
+
+            s2 = parseInt(document.querySelector('input[name="q4"]:checked').value) +
+                 parseInt(document.querySelector('input[name="q5"]:checked').value);
+
+            s3 = parseInt(document.querySelector('input[name="q6"]:checked').value) +
+                 parseInt(document.querySelector('input[name="q7"]:checked').value);
+
+            s4 = parseInt(document.querySelector('input[name="q8"]:checked').value) +
+                 parseInt(document.querySelector('input[name="q9"]:checked').value) +
+                 parseInt(document.querySelector('input[name="q10"]:checked').value);
+
+            total = s1 + s2 + s3 + s4;
+
+            // 填入页面
+            document.getElementById('totalScore').innerText = total;
+            document.getElementById('score1').innerText = s1;
+            document.getElementById('score2').innerText = s2;
+            document.getElementById('score3').innerText = s3;
+            document.getElementById('score4').innerText = s4;
+
+            // 分析
+            let text = '';
+            if(total <= 10) {
+                text = '您目前无明显创伤后应激反应，心理状态相对稳定，自主神经调节与情绪调控功能正常。';
+            } else if(total <= 20) {
+                text = '存在轻度创伤相关情绪反应，表现为轻微的闯入性思维或警觉性增高，属于正常心理应激范围，可通过自我调节恢复。';
+            } else if(total <= 32) {
+                text = '中度创伤应激反应，负性情绪与回避行为较明显，提示心理防御机制处于高负荷状态，建议加强情绪疏导。';
+            } else {
+                text = '高分提示存在显著创伤后应激症状，闯入、回避、高警觉维度均异常，PTSD筛查阳性风险较高，建议尽快寻求专业心理咨询或精神科评估。';
+            }
+            document.getElementById('analysis').innerText = text;
+
+            // 显示结果
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('pdfBtn').style.display = 'inline-block';
+        }
+
+        // 导出PDF
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const content = document.getElementById('pdf-content');
+            const canvas = await html2canvas(content, { scale: 2 });
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 210;
+            const imgHeight = canvas.height * 210 / canvas.width;
+            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+            pdf.save(`晓喻_心理创伤测评报告.pdf`);
+        }
+    </script>
+</body>
+</html>
